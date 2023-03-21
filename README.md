@@ -19,3 +19,24 @@ the "issue" however is performance.
 3. running Mail Plus Server uses a fairly surprising amount of RAM so if you want faster email transmissions then you sacrifice RAM usage, or you get slower email transmissions but save a lot on RAM
 
 another benefit of Mail Plus server is because it performs a queue if the email fails to send, it will try again later, where the ssmtp option will not unless the script executes again. You also get a benefit in Mail Plus Server that you can see a history of all the emails sent if you wish to see any of those logs.
+
+example of performance
+```
+#running script with last parameter set to "1" to use "ssmtp" command
+#root@Server2:/volume1/web/logging/testing# time bash email_test.sh
+#
+#Email Sent Successfully
+#
+#real    0m2.673s
+#user    0m0.010s
+#sys     0m0.009s
+
+#running script with last parameter set to "0" to use "sendmail" command through Synology Mail Plus Server
+#root@Server2:/volume1/web/logging/testing# time bash email_test.sh
+#
+#Email Sent Successfully
+
+#real    0m0.170s
+#user    0m0.101s
+#sys     0m0.044s
+```
