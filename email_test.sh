@@ -76,7 +76,7 @@ function send_email(){
 send_email "to@email.com" "from@email.com" "/volume1/web/logging/notifications" "email_contents.txt" "email_test" "This is a test" 1
 
 
-#running script with last parameter set to "1" to use "ssmtp" command
+#running script with last parameter set to "0" to use "ssmtp" command
 #root@Server2:/volume1/web/logging/testing# time bash email_test.sh
 #
 #Email Sent Successfully
@@ -85,7 +85,7 @@ send_email "to@email.com" "from@email.com" "/volume1/web/logging/notifications" 
 #user    0m0.010s
 #sys     0m0.009s
 
-#running script with last parameter set to "0" to use "sendmail" command through Synology Mail Plus Server
+#running script with last parameter set to "1" to use "sendmail" command through Synology Mail Plus Server
 #root@Server2:/volume1/web/logging/testing# time bash email_test.sh
 #
 #Email Sent Successfully
