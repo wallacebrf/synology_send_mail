@@ -2,52 +2,66 @@
 
 function send_email()
 {
-	#to_email_address=${1}
-	#from_email_address=${2}
-	#log_file_location=${3}
-	#log_file_name=${4}
-	#subject=${5}
-	#mail_body=${6}
-	#use_ssmtp (value =0) or use mail plus server (value =1) ${7}
+	# to_email_address=${1}
+	# from_email_address=${2}
+	# email_content_file_location=${3}
+	# email_content__file_name=${4}
+	# subject=${5}
+	# use_ssmtp (value =0) or use mail plus server (value =1) ${6}
 
+	if [ $# -gt 6 ]; then
+		echo -e "Too more arguments.\n"
+		exit $?
+	fi
 
-	if [[ "${3}" == "" || "${4}" == "" || "${7}" == "" ]]; then
+	if [[ "${3}" == "" || "${4}" == "" || "${6}" == "" ]]; then
 		echo "Incorrect data was passed to the \"send_email\" function, cannot send email"
 		exit $?
 	fi
 
-	#make sure directory exists
+	# make sure directory exists
 	if [ ! -d "${3}" ]; then
 		echo "cannot send email as directory \"${3}\" does not exist"
 		exit $?
 	fi
 
-	#make sure directory is writable
+	# make sure directory is writable
 	if [ ! -w "${3}" ]; then
 		echo "cannot send email as directory \"${3}\" does not have WRITE permissions"
 		exit $?
 	fi
 
-	#make sure directory is readable
+	# make sure directory is readable
 	if [ ! -r "${3}" ]; then
 		echo "cannot send email as directory \"${3}\" does not have READ permissions"
 		exit $?
 	fi
 
-	local now=$(date +"%T")
-	echo "To: ${1} " > ${3}/${4}
-	echo "From: ${2} " >> ${3}/${4}
-	echo "Subject: ${5}" >> ${3}/${4}
-	#echo "" >> ${3}/${4}
-	echo -e "\n$now - ${6}\n" >> ${3}/${4}
-													
-	if [[ "${1}" == "" || "${2}" == "" || "${5}" == "" || "${6}" == "" ]]; then
+	if [[ "${1}" == "" || "${2}" == "" || "${5}" == "" ]]; then
 		echo -e "\n\nOne or more email address parameters [to, from, subject, mail_body] was not supplied, Cannot send an email"
 		exit $?
 	fi
 
-	if [ ${7} -eq 1 ]; then #use Synology Mail Plus server "sendmail" command
-						
+	# replace the email_contents.txt marks
+	cat /dev/null > ${3}"/"${4}"_temp"
+	while IFS= read -r line
+	do
+		if [ ` echo $line | grep -c "#Z1#" ` -ne 0 ];
+		then
+			echo "${line/\#Z1\#/${1}}" >> ${3}"/"${4}"_temp"
+		elif [ ` echo $line | grep -c "#Z2#" ` -ne 0 ];
+		then
+			echo "${line/\#Z2\#/${2}}" >> ${3}"/"${4}"_temp"
+		elif [ ` echo $line | grep -c "#Z3#" ` -ne 0 ];
+		then
+			echo "${line/\#Z3\#/${5}}" >> ${3}"/"${4}"_temp"
+		else
+			echo "$line" >> ${3}"/"${4}"_temp"
+		fi
+	done < ${3}"/"${4}
+													
+	if [ ${6} -eq 1 ]; #use Synology Mail Plus server "sendmail" command
+	then	
 		#verify MailPlus Server package is installed and running as the "sendmail" command is not installed in synology by default. the MailPlus Server package is required
 		local install_check=$(/usr/syno/bin/synopkg list | grep MailPlus-Server)
 		if [ "$install_check" = "" ]; then
@@ -81,9 +95,11 @@ function send_email()
 	else 
 		echo "Incorrect parameters supplied, cannot send email" |& tee ${3}/${4}
 	fi
+
+	rm -f ${3}"/"${4}"_temp"
 }
 
-send_email "to@email.com" "from@email.com" "/volume1/web/logging/notifications" "email_contents.txt" "email_test" "This is a test" 1
+send_email "to@email.com" "from@email.com" ${PWD} "email_contents.txt" "email_test" 1
 
 
 #running script with last parameter set to "0" to use "ssmtp" command
