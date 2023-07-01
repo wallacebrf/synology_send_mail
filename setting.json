@@ -1,0 +1,17 @@
+{
+	"information":
+	{
+		"to_address": "to@email.com",
+		"from_address": "from@email.com"
+	},
+
+	"content_file":
+	{
+		"name": "email_contents.txt",
+		"location": "${PWD}"
+	},
+
+	"subject": "email_test",
+
+	"sending_mode": "mail server"
+}
