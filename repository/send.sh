@@ -40,23 +40,13 @@ if [[ "${1}" == "" || "${2}" == "" || "${5}" == "" ]]; then
 	exit $?
 fi
 
-# replace the email_contents.txt marks
+# making the mail
 cat /dev/null > ${3}"/"${4}"_temp"
-while IFS= read -r line
-do
-	if [ ` echo $line | grep -c "#Z1#" ` -ne 0 ];
-	then
-		echo "${line/\#Z1\#/${1}}" >> ${3}"/"${4}"_temp"
-	elif [ ` echo $line | grep -c "#Z2#" ` -ne 0 ];
-	then
-		echo "${line/\#Z2\#/${2}}" >> ${3}"/"${4}"_temp"
-	elif [ ` echo $line | grep -c "#Z3#" ` -ne 0 ];
-	then
-		echo "${line/\#Z3\#/${5}}" >> ${3}"/"${4}"_temp"
-	else
-		echo "$line" >> ${3}"/"${4}"_temp"
-	fi
-done < ${3}"/"${4}
+echo "To: "${1} >> ${3}"/"${4}"_temp"
+echo "From: "${2} >> ${3}"/"${4}"_temp"
+echo "Subject: "${5} >> ${3}"/"${4}"_temp"
+echo "" >> ${3}"/"${4}"_temp"
+cat ${3}"/"${4} >> ${3}"/"${4}"_temp"
 													
 if [ ${6} -eq 1 ]; #use Synology Mail Plus server "sendmail" command
 then	
