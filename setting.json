@@ -13,5 +13,7 @@
 
 	"subject": "email_test",
 
-	"sending_mode": "mail server"
+	"sending_mode": "mail server",
+
+	"user_list_location": "/etc/synouser.conf"
 }

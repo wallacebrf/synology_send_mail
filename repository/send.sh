@@ -71,7 +71,7 @@ then
 	if [ "$Mstatus" = "package MailPlus-Server is turned on" ]; then
 		email_response=$(sendmail -t < ${3}/${4}"_temp"  2>&1)
 		if [[ "$email_response" == "" ]]; then
-			echo -e "\nEmail Sent Successfully"
+			echo -e "Email Sent Successfully\n"
 		else
 			echo -e "\n\nWARNING -- An error occurred while sending email. The error was: $email_response\n\n"
 		fi					
@@ -86,7 +86,7 @@ elif [ ${6} -eq 0 ]; then #use "ssmtp" command
 
 	email_response=$(ssmtp ${1} < ${3}/${4}"_temp"  2>&1)
 	if [[ "$email_response" == "" ]]; then
-		echo -e "\nEmail Sent Successfully"
+		echo -e "Email Sent Successfully\n"
 	else
 		echo -e "\n\nWARNING -- An error occurred while sending email. The error was: $email_response\n\n"
 	fi	

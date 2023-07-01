@@ -22,5 +22,9 @@ then
     mode=1
 fi
 
-echo ${toAddress}
-bash $(dirname "$0")"/repository/send.sh" ${toAddress} ${fromAddress} ${fileLocation} ${fileName} ${subject} ${mode}
+userMailList=`cat $( jq -r '.user_list_location' setting.json ) | tail -n +2 | cut -d ':' -f3`
+for toAddress in ${userMailList}
+do
+	echo ${toAddress}
+	bash $(dirname "$0")"/repository/send.sh" ${toAddress} ${fromAddress} ${fileLocation} ${fileName} ${subject} ${mode}
+done
