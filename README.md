@@ -18,27 +18,27 @@ If you want to send an email to all users, just follow the above steps to set up
 
 # Introduction to setting.json Parameters
 
-## information
+### information
 -	to\_address  
 	Recipient's email address  
 -	from\_address  
 	Sender's email address  
 
-## content\_file
+### content\_file
 -	name  
 	File name where the email content is located  
 -	location  
 	Location of the file where the email content is
 
-## subject
+### subject
 Subject of the email
 
-## sending\_mode
+### sending\_mode
 Which protocol to use to send the email, currently can choose "ssmtp" or "mail server"
 
-## user\_list\_location
-Email addresses of the users who will receive the email, default is `/etc/synouser.conf`
-The format is as follows:
+### user\_list\_location
+Email addresses of the users who will receive the email, default is `/etc/synouser.conf`  
+The format is as follows:  
 ```txt
 #$_@UID__INDEX@_$2000$
 admin:0:
